@@ -1,0 +1,27 @@
+html, body {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.map {
+	position: fixed;
+	width:80%;
+	height:100%;
+}
+
+#menubar {
+	float: right;
+	height:100%;
+	width: 20%;
+	background-color: white;
+}
+
+input {
+    left: 60px;
+    position: relative;
+}
+
+
+
