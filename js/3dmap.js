@@ -1,25 +1,19 @@
-var projection = new ol.proj.Projection({
-                code: 'EPSG:27700',
-                extent: [0.0, 0.0, 700000.0, 1300000.0],
-                units: 'm'
-            });
-            ol.proj.addProjection(projection);
-
 var view = new ol.View({
-  projection: projection,
-  center: [278202, 694687],
-  zoom: 7
+  projection: 'EPSG:4326',
+  center: [-100, 35],
+  zoom: 3
 });
 
 var layer = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: 'http://wms.locationcentre.co.uk/services/thinkwhere1234/service?',
+    url: 'http://demo.boundlessgeo.com/geoserver/wms',
     params: {
-      'LAYERS': 'os_background_bng_colour',
-      'FORMAT' : 'image/png'
+      'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'
     }
   })
 });
+
+var WFSLayer = new ol.layer.Tile({});
 
 var ol2d = new ol.Map({
   layers: [layer],
@@ -35,4 +29,6 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
 });
 scene.terrainProvider = terrainProvider;
 
-ol3d.setEnabled(false);
+ol3d.setEnabled(true);
+
+//document.getElementById('map2d').innerHTML = ol3d.getEnabled().toString()
