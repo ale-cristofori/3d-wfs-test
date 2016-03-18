@@ -1,3 +1,10 @@
+proj4.defs('EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 ' +
+          '+x_0=400000 +y_0=-100000 +ellps=airy ' +
+          '+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 ' +
+          '+units=m +no_defs');
+var proj27700 = ol.proj.get('EPSG:27700');
+proj27700.setExtent([0, 0, 700000, 1300000]);
+
 var view = new ol.View({
   projection: 'EPSG:4326',
   center: [-100, 35],
@@ -12,6 +19,21 @@ var layer = new ol.layer.Tile({
     }
   })
 });
+
+
+var vectorSource = new ol.source.Vector({
+  format: new ol.format.GeoJSON(),
+  url: 'GeoJSON/pkc_census_2011.geojson'
+});
+
+var OSMiniScale = new ol.layer.Tile({
+        source: new ol.source.XYZ({
+          projection: 'EPSG:27700',
+          url: 'http://tileserver.maptiler.com/miniscale/{z}/{x}/{y}.png',
+          crossOrigin: '',
+          maxZoom: 6
+        })
+      });
 
 var vectorSource = new ol.source.Vector({
   loader: function(extent, resolution, projection) {
@@ -33,6 +55,8 @@ var vectorSource = new ol.source.Vector({
     maxZoom: 19
   }))
 });
+
+
 
 window.loadFeatures = function(response) {
   alert("Window.loadfeatures");
@@ -57,7 +81,7 @@ function loadFeatures(response) {
 }
 
 var ol2d = new ol.Map({
-  layers: [layer,vector],
+  layers: [layer, OSMiniScale],
   target: 'map2d',
   view: view
 });
@@ -68,7 +92,7 @@ var scene = ol3d.getCesiumScene();
 var terrainProvider = new Cesium.CesiumTerrainProvider({
     url : '//assets.agi.com/stk-terrain/world'
 });
-//scene.terrainProvider = terrainProvider;
+scene.terrainProvider = terrainProvider;
 
 ol3d.setEnabled(true);
 
